@@ -1,7 +1,8 @@
 <template>
   <div id="wrapper">
+    <a href="#main" class="skip-link">Skip to content</a>
     <AppHeader />
-    <main>
+    <main id="main" tabindex="-1">
       <router-view v-slot="{ Component }">
         <transition name="page" mode="out-in">
           <component :is="Component" />
@@ -26,4 +27,5 @@ import AppFooter from './components/AppFooter.vue'
 main {
   flex: 1;
 }
+main:focus { outline: none; }
 </style>
