@@ -2,63 +2,146 @@
   <div class="home">
     <!-- ========== HERO ========== -->
     <section class="hero">
-      <div class="hero__bg"></div>
-      <div class="hero__overlay"></div>
+      <div class="hero__bg" aria-hidden="true"></div>
       <div class="container hero__content">
-        <p class="hero__pretitle animate-fade-in-up">Qualified Professionals to Expand Your Business</p>
-        <h1 class="hero__heading animate-fade-in-up delay-2">Elite Worldwide Talent</h1>
-        <p class="hero__desc animate-fade-in-up delay-3">Your next hire at 70% lower cost than a US equivalent.</p>
-        <router-link to="/hire-form" class="hero__cta animate-fade-in-up delay-4">
-          Recruit now
-        </router-link>
-      </div>
-      <div class="hero__scroll-indicator">
-        <div class="hero__scroll-dot"></div>
+        <span class="pill pill--light animate-fade-in-up">
+          <span class="hero__dot" aria-hidden="true"></span>
+          Hiring in {{ company.hubs.length }} countries
+        </span>
+        <h1 class="hero__heading animate-fade-in-up delay-2">
+          Elite worldwide talent,<br />without the US price tag
+        </h1>
+        <p class="hero__desc animate-fade-in-up delay-3">
+          We recruit, vet, and manage full-time remote professionals for growing companies —
+          at roughly 70% less than an equivalent local hire.
+        </p>
+        <div class="hero__actions animate-fade-in-up delay-4">
+          <router-link to="/hire-form" class="btn btn--light btn--lg">Start hiring</router-link>
+          <router-link to="/case-studies" class="btn btn--ghost-light btn--lg">See the results</router-link>
+        </div>
+        <p class="hero__note animate-fade-in-up delay-5">
+          Vetted shortlist in 14 days · No recruiting fees · Payroll and compliance handled
+        </p>
       </div>
     </section>
 
-    <!-- ========== TALENT PROFILES ========== -->
-    <section class="section talent">
+    <!-- ========== STATS ========== -->
+    <section class="section section--tight stats-section">
       <div class="container">
-        <h2 class="talent__title">Latest Talent Profiles</h2>
-        <div class="talent__grid">
-          <div v-for="(profile, i) in profiles" :key="i" class="talent-card card">
-            <div class="talent-card__avatar-wrap">
-              <img :src="profile.avatar" :alt="profile.name" class="talent-card__avatar" loading="lazy" decoding="async" />
-            </div>
-            <div class="talent-card__info">
-              <h3 class="talent-card__name">{{ profile.name }}</h3>
-              <span class="talent-card__role">{{ profile.role }}</span>
-              <span class="talent-card__cert">{{ profile.cert }}</span>
-            </div>
-            <p class="talent-card__desc">{{ profile.desc }}</p>
-          </div>
+        <StatBand :stats="stats" />
+      </div>
+    </section>
+
+    <!-- ========== ROLES ========== -->
+    <section class="section">
+      <div class="container">
+        <SectionHeading
+          eyebrow="What we staff"
+          title="Every role your team runs on"
+          sub="Six practice areas, each with recruiters who have actually hired for that function."
+        />
+        <div class="roles-grid">
+          <router-link
+            v-for="(cat, i) in roleCategories"
+            :key="cat.slug"
+            to="/services"
+            class="role-card card card--hover"
+            v-reveal="i * 70"
+          >
+            <span class="role-card__icon" aria-hidden="true">{{ cat.icon }}</span>
+            <h3 class="role-card__title">{{ cat.title }}</h3>
+            <p class="role-card__desc">{{ cat.summary }}</p>
+            <span class="role-card__from">From ${{ cat.from.toLocaleString() }}/mo</span>
+          </router-link>
         </div>
       </div>
     </section>
 
     <!-- ========== HOW IT WORKS ========== -->
-    <section class="section section--alt how-it-works">
+    <section class="section section--alt">
       <div class="container">
-        <h2 class="how-it-works__title">How It Works</h2>
-        <div class="how-it-works__steps">
-          <div v-for="(step, i) in steps" :key="i" class="step-card">
-            <div class="step-card__number">{{ i + 1 }}</div>
-            <img :src="step.image" :alt="step.title" class="step-card__image" loading="lazy" decoding="async" />
-            <h3 class="step-card__title">{{ step.title }}</h3>
-            <p class="step-card__desc">{{ step.desc }}</p>
-          </div>
+        <SectionHeading
+          eyebrow="How it works"
+          title="Three steps, about two weeks"
+          sub="You describe the role. We do the sourcing, testing, and interviewing. You pick from a shortlist."
+        />
+        <ol class="steps">
+          <li v-for="(step, i) in steps" :key="step.title" class="step" v-reveal="i * 100">
+            <div class="step__media">
+              <img :src="step.image" :alt="" class="step__image" loading="lazy" decoding="async" />
+              <span class="step__number">{{ i + 1 }}</span>
+            </div>
+            <h3 class="step__title">{{ step.title }}</h3>
+            <p class="step__desc">{{ step.desc }}</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ========== TALENT PROFILES ========== -->
+    <section class="section">
+      <div class="container">
+        <SectionHeading
+          eyebrow="Available now"
+          title="Latest talent profiles"
+          sub="A sample of professionals currently between placements. Real profiles are shared once we know your role."
+        />
+        <div class="talent-grid">
+          <article v-for="(p, i) in profiles" :key="p.name" class="talent-card card card--hover" v-reveal="i * 60">
+            <div class="talent-card__head">
+              <img :src="p.avatar" :alt="`${p.name}, ${p.role}`" class="talent-card__avatar" loading="lazy" decoding="async" />
+              <div>
+                <h3 class="talent-card__name">{{ p.name }}</h3>
+                <span class="talent-card__role">{{ p.role }}</span>
+              </div>
+            </div>
+            <span class="pill pill--accent talent-card__cert">{{ p.cert }}</span>
+            <p class="talent-card__desc">{{ p.desc }}</p>
+          </article>
+        </div>
+        <div class="talent-cta">
+          <router-link to="/hire-form" class="btn btn--outline">Request matching profiles</router-link>
         </div>
       </div>
     </section>
 
-    <!-- ========== WHY DUBBLESTACK ========== -->
-    <section class="section why">
+    <!-- ========== TESTIMONIALS ========== -->
+    <section class="section section--plum quotes">
       <div class="container">
-        <h2 class="why__title">Why DubbleStack</h2>
-        <div class="why__grid">
-          <div v-for="(item, i) in whyItems" :key="i" class="why-card card">
-            <div class="why-card__icon">{{ item.icon }}</div>
+        <SectionHeading
+          eyebrow="Client results"
+          title="What changes after the first hire"
+          light
+        />
+        <div class="quotes-grid">
+          <figure v-for="(t, i) in testimonials" :key="t.author" class="quote-card" v-reveal="i * 90">
+            <blockquote class="quote-card__text">“{{ t.quote }}”</blockquote>
+            <figcaption class="quote-card__author">
+              <img :src="t.avatar" alt="" class="quote-card__avatar" loading="lazy" decoding="async" />
+              <span>
+                <strong>{{ t.author }}</strong>
+                <small>{{ t.role }}</small>
+              </span>
+            </figcaption>
+          </figure>
+        </div>
+        <div class="quotes-cta">
+          <router-link to="/case-studies" class="btn btn--light">Read the case studies</router-link>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== WHY ========== -->
+    <section class="section">
+      <div class="container">
+        <SectionHeading
+          eyebrow="Why Dubblestack"
+          title="Staffing without the usual friction"
+          sub="We are not a job board and not an agency retainer. We hire the person, employ them properly, and stay accountable for the placement."
+        />
+        <div class="why-grid">
+          <div v-for="(item, i) in whyItems" :key="item.title" class="why-card" v-reveal="i * 60">
+            <span class="why-card__icon" aria-hidden="true">{{ item.icon }}</span>
             <h3 class="why-card__title">{{ item.title }}</h3>
             <p class="why-card__desc">{{ item.desc }}</p>
           </div>
@@ -67,420 +150,320 @@
     </section>
 
     <!-- ========== FAQ ========== -->
-    <section class="section section--alt faq">
+    <section class="section section--alt">
       <div class="container">
-        <h2 class="faq__title">Frequently Asked Questions</h2>
-        <div class="faq__list">
-          <div v-for="(item, i) in faqs" :key="i" class="faq-item" :class="{ 'faq-item--open': openFaq === i }">
-            <button class="faq-item__question" @click="toggleFaq(i)">
-              <span>{{ item.q }}</span>
-              <svg class="faq-item__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-            </button>
-            <div class="faq-item__answer" v-show="openFaq === i">
-              <p>{{ item.a }}</p>
-            </div>
-          </div>
-        </div>
+        <SectionHeading eyebrow="FAQ" title="Questions we get asked first" />
+        <FaqList :items="faqs" />
+        <p class="faq-more">
+          Still deciding? <router-link to="/contact">Talk to us directly</router-link> —
+          no pitch, just a straight answer on whether this fits.
+        </p>
       </div>
     </section>
 
-    <!-- ========== CTA ========== -->
-    <section class="cta-section">
-      <div class="container cta-section__inner">
-        <h2 class="cta-section__title">Ready to Build Your Dream Team?</h2>
-        <p class="cta-section__desc">Get started today and find the perfect talent for your business.</p>
-        <router-link to="/hire-form" class="btn btn--primary">Start Recruiting</router-link>
-      </div>
-    </section>
+    <CtaBanner />
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import SectionHeading from '../components/SectionHeading.vue'
+import StatBand from '../components/StatBand.vue'
+import CtaBanner from '../components/CtaBanner.vue'
+import FaqList from '../components/FaqList.vue'
+import { company, stats } from '../data/site'
+import { roleCategories } from '../data/roles'
+import { testimonials } from '../data/caseStudies'
 
 const profiles = [
-  { name: 'Mark', role: 'Accounting', cert: 'B.S Certified Public Accountant', avatar: '/images/47.png', desc: 'Over 12 years of experience in Administration and Accounting. Accountable for all accounting functions, including audits, monthly and annual reporting, foreign exchange, accounts payable and receivable, and more.' },
-  { name: 'David', role: 'Legal Assistant', cert: 'LLB With 8 Years Of Experience', avatar: '/images/16711.jpg', desc: 'I have worked as a corporate lawyer for 8 years, primarily focusing on negotiating and reviewing commercial and corporate agreements, while also offering legal counsel and support to companies.' },
-  { name: 'Maria', role: 'Marketing Specialist', cert: 'B.S Social Communication', avatar: '/images/9.png', desc: 'I possess over 12 years of experience in creating communication and marketing strategies, managing digital content, and leading creative teams to achieve brand growth.' },
-  { name: 'Alex', role: 'Software Engineer', cert: 'B.S Computer Science', avatar: '/images/18475.jpg', desc: 'Full-stack developer with 6+ years experience building scalable web applications using React, Node.js, and cloud services.' },
-  { name: 'Laura', role: 'Customer Success', cert: 'B.A Business Administration', avatar: '/images/2282.jpg', desc: 'Customer-centric professional with 5+ years supporting SaaS companies in onboarding, retention, and scaling customer relationships.' },
-  { name: 'Carlos', role: 'Virtual Assistant', cert: 'Project Management Certified', avatar: '/images/33447.jpg', desc: 'Highly organized virtual assistant with expertise in executive support, calendar management, and project coordination for remote teams.' },
+  { name: 'Mark', role: 'Accounting', cert: 'Certified Public Accountant', avatar: '/images/47.png', desc: 'Over 12 years across administration and accounting — audits, monthly and annual reporting, foreign exchange, and full AP/AR ownership.' },
+  { name: 'David', role: 'Legal Assistant', cert: 'LLB · 8 years experience', avatar: '/images/16711.jpg', desc: 'Corporate lawyer for 8 years, focused on negotiating and reviewing commercial agreements and advising company leadership.' },
+  { name: 'Maria', role: 'Marketing Specialist', cert: 'B.S. Social Communication', avatar: '/images/9.png', desc: '12+ years building communication and marketing strategy, managing digital content, and leading creative teams through brand growth.' },
+  { name: 'Alex', role: 'Software Engineer', cert: 'B.S. Computer Science', avatar: '/images/18475.jpg', desc: 'Full-stack developer with 6+ years shipping scalable web applications on React, Node.js, and AWS.' },
+  { name: 'Laura', role: 'Customer Success', cert: 'B.A. Business Administration', avatar: '/images/2282.jpg', desc: 'Five years supporting SaaS companies through onboarding, retention, and scaling customer relationships past first renewal.' },
+  { name: 'Carlos', role: 'Executive Assistant', cert: 'Project Management Certified', avatar: '/images/33447.jpg', desc: 'Executive support specialist covering calendar, inbox, travel, and project coordination for distributed leadership teams.' },
 ]
 
 const steps = [
-  { title: 'Tell Us Your Needs', desc: 'Share the role requirements and job description with our team.', image: '/images/2150171838.jpg' },
-  { title: 'We Source & Vet', desc: 'Our global recruiting teams find, test, and interview the best candidates.', image: '/images/2150312701.jpg' },
-  { title: 'You Select & Hire', desc: 'Review the shortlisted profiles and choose your ideal team member.', image: '/images/18475.jpg' },
+  { title: 'Tell us the role', desc: 'A 30-minute call and a job description. We translate it into a scorecard we can actually hire against.', image: '/images/2150171838.jpg' },
+  { title: 'We source and vet', desc: 'Our in-country teams recruit, test, and interview. You stay out of it until there is something worth reviewing.', image: '/images/2150312701.jpg' },
+  { title: 'You choose and onboard', desc: 'Three to five finalists with scorecards and recorded intros. Pick one, and we handle contracts, payroll, and compliance.', image: '/images/18475.jpg' },
 ]
 
 const whyItems = [
-  { icon: '💰', title: '70% Cost Savings', desc: 'Get the same quality talent at a fraction of the cost compared to US equivalents.' },
-  { icon: '🌍', title: 'Global Talent Pool', desc: 'Access professionals from Venezuela, Peru, Nigeria, Philippines and more.' },
-  { icon: '⚡', title: 'Fast Hiring', desc: 'Our streamlined process gets you matched with talent quickly and efficiently.' },
-  { icon: '🛡️', title: 'Zero Legal Hassle', desc: 'We handle all legal, tax, and compliance documentation so you don\'t have to.' },
-  { icon: '🕐', title: 'Flexible Time Zones', desc: 'Talent available to work in any time zone you prefer.' },
-  { icon: '📋', title: 'Simple Pricing', desc: 'One flat monthly fee. No recruiting or onboarding charges.' },
+  { icon: '💰', title: '70% cost savings', desc: 'The same calibre of professional for a fraction of a US equivalent — without cutting their pay to get there.' },
+  { icon: '🌍', title: 'Genuine global reach', desc: 'Recruiting teams on the ground in Venezuela, Peru, Nigeria, and the Philippines.' },
+  { icon: '⚡', title: 'Shortlist in 14 days', desc: 'Most roles reach a vetted shortlist inside two weeks of the kickoff call.' },
+  { icon: '🛡️', title: 'Zero legal overhead', desc: 'We are the employer of record. Contracts, tax, and local compliance are our problem, not yours.' },
+  { icon: '🕐', title: 'Your time zone', desc: 'We hire for the overlap hours you need, so your team is not waiting overnight for answers.' },
+  { icon: '📋', title: 'One flat fee', desc: 'A single monthly number covering salary, benefits, and our work. No recruiting or onboarding charges.' },
 ]
 
 const faqs = [
-  { q: 'What are the services offered by DubbleStack?', a: 'DubbleStack is an international staff augmentation service that manages the recruiting, vetting, testing, and hiring of global talent on your behalf. Simply select the professionals you\'d like to partner with from our talent network, and we\'ll handle everything else.' },
-  { q: 'What is the mission of DubbleStack?', a: 'At DubbleStack, we are committed to creating equal opportunities for talent worldwide. Our mission is to empower individuals to stay in their home countries while earning life-changing incomes, enabling them to support their families and contribute to their local communities.' },
-  { q: 'How does DubbleStack source its talent?', a: 'DubbleStack has recruiting teams based in Venezuela, Peru, Nigeria, and the Philippines, enabling us to operate across various time zones globally. Our team collaborates with local resources in these countries to source, test, and interview talent tailored to your specific job requirements.' },
-  { q: 'What are the costs associated with working with DubbleStack?', a: 'Each role varies, and the cost may change based on your specific requirements. Contact us for a consultation, and once we assess your needs, we\'ll provide you with an accurate answer.' },
-  { q: 'What are your pricing details?', a: 'At DubbleStack, we\'ve aimed to simplify the process. We offer a single flat monthly fee for roles that do not involve commission. You pay once a month starting from the initial date, with no additional recruiting or onboarding charges.' },
-  { q: 'What are the working hours for DubbleStack talent?', a: 'We will identify talent available to work in any time zone you prefer. Our recruiting teams located worldwide enable us to source candidates that align with nearly every time zone.' },
-  { q: 'Are these individuals working part-time or full-time?', a: 'We have talent that can be tailored to meet your needs.' },
-  { q: 'Do I need to complete any legal or tax documentation?', a: 'We take on that responsibility so you don\'t have to. Simply share your requirements, conduct interviews, and choose your preferred candidate, and we\'ll handle everything else!' },
+  { q: 'What exactly does Dubblestack do?', a: 'We are an international staff augmentation service. We manage recruiting, vetting, testing, and hiring of global talent on your behalf, then act as employer of record so the professional is properly and legally employed. You select who you work with; we handle everything around it.' },
+  { q: 'What is the mission behind the company?', a: 'We are committed to creating equal opportunity for talent worldwide. Our aim is to let people stay in their home countries while earning a life-changing income, supporting their families and contributing to their local economies rather than having to emigrate to access good work.' },
+  { q: 'How do you source talent?', a: 'We have recruiting teams based in Venezuela, Peru, Nigeria, and the Philippines. They work through local universities, professional networks, and referrals to source, test, and interview candidates against your specific role requirements.' },
+  { q: 'What does it cost?', a: 'One flat monthly fee per hire, starting around $1,200/month depending on the role and seniority. That figure covers the professional\'s full compensation, local payroll and benefits, and our recruiting and management work. There are no separate recruiting or onboarding charges.' },
+  { q: 'What are the working hours?', a: 'Whatever overlap you need. Because our recruiting teams span several regions, we can source candidates aligned to almost any time zone. Coverage far outside a professional\'s local hours carries a shift differential, quoted up front.' },
+  { q: 'Full-time or part-time?', a: 'Both. Most placements are full-time, but we staff part-time and contract engagements where the role genuinely warrants it.' },
+  { q: 'Do I have to handle legal or tax paperwork?', a: 'No. We take that on. You share requirements, interview candidates, and choose your hire — contracts, tax withholding, statutory benefits, and compliance in the professional\'s country are handled on our side.' },
+  { q: 'What if the hire does not work out?', a: 'Tell your account manager and we replace them at no additional cost within your plan\'s guarantee window — 60 days on Essential, 90 on Professional. We keep searching until the role is filled properly.' },
 ]
-
-const openFaq = ref(0)
-function toggleFaq(i) {
-  openFaq.value = openFaq.value === i ? -1 : i
-}
 </script>
 
 <style scoped>
 /* ---- Hero ---- */
 .hero {
   position: relative;
-  min-height: 80vh;
+  min-height: min(88vh, 780px);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  padding: calc(var(--header-height) + 3rem) 0 5rem;
 }
 .hero__bg {
   position: absolute;
   inset: 0;
-  background-image: url('/images/hero-bg.jpg');
-  background-position: top center;
+  background-image:
+    linear-gradient(165deg, rgba(102, 2, 60, 0.92) 0%, rgba(61, 1, 36, 0.97) 62%),
+    url('/images/hero-bg.jpg');
+  background-position: center, top center;
+  background-size: cover, cover;
   background-repeat: no-repeat;
-  background-size: cover;
   z-index: 0;
 }
-.hero__bg::before {
+/* Radial bloom behind the headline for depth. */
+.hero__bg::after {
   content: '';
   position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, #BC90A9 0%, #000000 53%);
-  opacity: 0.88;
-  z-index: 1;
-}
-.hero__overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
+  top: -20%;
+  left: 50%;
+  width: 1000px;
+  height: 1000px;
+  transform: translateX(-50%);
+  background: radial-gradient(circle, rgba(188, 144, 169, 0.28) 0%, transparent 60%);
 }
 .hero__content {
   position: relative;
   z-index: 2;
   text-align: center;
-  padding: 6rem 1rem 4rem;
 }
-.hero__pretitle {
-  font-family: 'Roboto', sans-serif;
-  font-size: 18px;
-  font-weight: 400;
-  color: #BC90A9;
-  margin-bottom: 0.5rem;
+.hero__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent-500);
+  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.25);
 }
 .hero__heading {
-  font-family: 'Roboto', sans-serif;
-  color: #BC90A9;
-  font-size: clamp(2rem, 4.5vw, 40px);
-  font-weight: 600;
-  margin-bottom: 1rem;
-  letter-spacing: -0.01em;
+  color: #fff;
+  margin: 1.5rem 0 1.25rem;
+  font-size: clamp(2.3rem, 5.6vw, 4rem);
+  letter-spacing: -0.035em;
 }
 .hero__desc {
-  font-family: 'Roboto', sans-serif;
-  color: #BC90A9;
-  font-size: 18px;
-  font-weight: 400;
-  margin-bottom: 2.5rem;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: clamp(1.05rem, 1.9vw, 1.25rem);
+  max-width: 620px;
+  margin: 0 auto 2.25rem;
+  text-wrap: pretty;
 }
-.hero__cta {
-  display: inline-block;
-  background-color: #BC90A9;
-  color: #66023C;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 500;
-  font-size: 1rem;
-  padding: 0.85rem 2.5rem;
-  border-radius: 15px;
-  border: none;
-  text-decoration: none;
-  transition: all var(--transition-normal);
+.hero__actions {
+  display: flex;
+  gap: 0.85rem;
+  justify-content: center;
+  flex-wrap: wrap;
 }
-.hero__cta:hover {
-  background-color: #d4a8c0;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(188, 144, 169, 0.3);
-}
-.hero__scroll-indicator {
-  position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 2;
-  width: 26px;
-  height: 42px;
-  border: 2px solid rgba(255,255,255,0.4);
-  border-radius: 13px;
-}
-.hero__scroll-dot {
-  width: 4px;
-  height: 8px;
-  background: #fff;
-  border-radius: 2px;
-  margin: 6px auto 0;
-  animation: scrollBounce 2s ease-in-out infinite;
-}
-@keyframes scrollBounce {
-  0%, 100% { transform: translateY(0); opacity: 1; }
-  50% { transform: translateY(14px); opacity: 0.3; }
+.hero__note {
+  margin: 1.75rem 0 0;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
 }
 
-/* ---- Talent ---- */
-.talent__title {
-  text-align: center;
-  margin-bottom: 3rem;
-  position: relative;
-}
-.talent__title::after {
-  content: '';
-  display: block;
-  width: 60px;
-  height: 4px;
-  background: var(--brand-primary);
-  border-radius: 2px;
-  margin: 0.8rem auto 0;
-}
-.talent__grid {
+.stats-section { margin-top: -3.5rem; position: relative; z-index: 3; }
+
+/* ---- Roles ---- */
+.roles-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
 }
-.talent-card {
+.role-card {
+  display: flex;
+  flex-direction: column;
   padding: 2rem;
-  text-align: center;
 }
-.talent-card__avatar-wrap {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  overflow: hidden;
-  margin: 0 auto 1rem;
-  border: 3px solid var(--brand-primary);
-  padding: 3px;
-  background: linear-gradient(135deg, var(--brand-primary), var(--accent-blue));
-}
-.talent-card__avatar {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-}
-.talent-card__info {
-  margin-bottom: 1rem;
-}
-.talent-card__name {
-  font-size: 1.15rem;
-  margin-bottom: 0.25rem;
-}
-.talent-card__role {
-  display: block;
-  color: var(--brand-primary);
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-.talent-card__cert {
-  display: block;
-  color: var(--color-light);
-  font-size: 0.8rem;
-  margin-top: 0.15rem;
-}
-.talent-card__desc {
+.role-card__icon { font-size: 1.9rem; margin-bottom: 1rem; }
+.role-card__title { font-size: 1.15rem; margin-bottom: 0.55rem; }
+.role-card__desc {
   color: var(--color-muted);
-  font-size: 0.9rem;
-  line-height: 1.6;
-  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.65;
+  margin-bottom: 1.25rem;
+  flex: 1;
+}
+.role-card__from {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--plum-700);
 }
 
-/* ---- How It Works ---- */
-.how-it-works__title {
-  text-align: center;
-  margin-bottom: 3rem;
-}
-.how-it-works__title::after {
-  content: '';
-  display: block;
-  width: 60px;
-  height: 4px;
-  background: var(--brand-primary);
-  border-radius: 2px;
-  margin: 0.8rem auto 0;
-}
-.how-it-works__steps {
+/* ---- Steps ---- */
+.steps {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 2.5rem;
+  list-style: none;
 }
-.step-card {
-  text-align: center;
-  position: relative;
+.step__media { position: relative; margin-bottom: 1.5rem; }
+.step__image {
+  width: 100%;
+  height: 210px;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
 }
-.step-card__number {
-  width: 48px;
-  height: 48px;
+.step__number {
+  position: absolute;
+  bottom: -16px;
+  left: 20px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  background: var(--brand-primary);
+  background: var(--plum-700);
   color: #fff;
+  font-family: var(--font-heading);
   font-weight: 800;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 1.5rem;
-  box-shadow: 0 4px 15px rgba(102, 2, 60, 0.3);
+  border: 3px solid var(--color-subtle);
 }
-.step-card__image {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  border-radius: var(--radius-md);
-  margin-bottom: 1.5rem;
-}
-.step-card__title {
-  margin-bottom: 0.5rem;
-}
-.step-card__desc {
-  color: var(--color-muted);
-  font-size: 0.95rem;
-  margin: 0;
-}
+.step__title { margin-bottom: 0.5rem; font-size: 1.2rem; }
+.step__desc { color: var(--color-muted); font-size: 0.94rem; margin: 0; }
 
-/* ---- Why ---- */
-.why__title {
-  text-align: center;
-  margin-bottom: 3rem;
-}
-.why__title::after {
-  content: '';
-  display: block;
-  width: 60px;
-  height: 4px;
-  background: var(--brand-primary);
-  border-radius: 2px;
-  margin: 0.8rem auto 0;
-}
-.why__grid {
+/* ---- Talent ---- */
+.talent-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
   gap: 1.5rem;
 }
-.why-card {
-  padding: 2rem;
-  text-align: center;
-}
-.why-card__icon {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-}
-.why-card__title {
-  font-size: 1.1rem;
-  margin-bottom: 0.5rem;
-}
-.why-card__desc {
-  color: var(--color-muted);
-  font-size: 0.9rem;
-  margin: 0;
-}
-
-/* ---- FAQ ---- */
-.faq__title {
-  text-align: center;
-  margin-bottom: 3rem;
-}
-.faq__title::after {
-  content: '';
-  display: block;
-  width: 60px;
-  height: 4px;
-  background: var(--brand-primary);
-  border-radius: 2px;
-  margin: 0.8rem auto 0;
-}
-.faq__list {
-  max-width: 800px;
-  margin: 0 auto;
-}
-.faq-item {
-  background: var(--color-surface);
-  border-radius: var(--radius-md);
-  margin-bottom: 0.75rem;
-  box-shadow: var(--shadow-sm);
-  overflow: hidden;
-  transition: box-shadow var(--transition-normal);
-}
-.faq-item:hover {
-  box-shadow: var(--shadow-md);
-}
-.faq-item__question {
-  width: 100%;
+.talent-card { padding: 1.75rem; display: flex; flex-direction: column; }
+.talent-card__head {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 1.25rem 1.5rem;
-  background: none;
-  border: none;
-  text-align: left;
-  font-weight: 600;
-  font-size: 0.95rem;
-  color: var(--color-dark);
-  gap: 1rem;
+  gap: 0.9rem;
+  margin-bottom: 0.9rem;
 }
-.faq-item__icon {
+.talent-card__avatar {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--plum-100);
   flex-shrink: 0;
-  transition: transform var(--transition-normal);
 }
-.faq-item--open .faq-item__icon {
-  transform: rotate(180deg);
+.talent-card__name { font-size: 1.05rem; margin-bottom: 0.1rem; }
+.talent-card__role {
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--plum-500);
 }
-.faq-item__answer {
-  padding: 0 1.5rem 1.25rem;
+.talent-card__cert { align-self: flex-start; margin-bottom: 0.9rem; }
+.talent-card__desc {
   color: var(--color-muted);
-  font-size: 0.9rem;
-  line-height: 1.7;
+  font-size: 0.92rem;
+  line-height: 1.68;
+  margin: 0;
 }
-.faq-item__answer p { margin: 0; }
+.talent-cta { text-align: center; margin-top: 2.5rem; }
 
-/* ---- CTA ---- */
-.cta-section {
-  background: linear-gradient(135deg, #66023c 0%, #2d0f3e 100%);
-  padding: 5rem 0;
+/* ---- Quotes ---- */
+.quotes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
 }
-.cta-section__inner {
-  text-align: center;
+.quote-card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
 }
-.cta-section__title {
+.quote-card__text {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1rem;
+  line-height: 1.7;
+  margin: 0 0 1.5rem;
+  flex: 1;
+  text-wrap: pretty;
+}
+.quote-card__author {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.quote-card__avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+}
+.quote-card__author strong {
+  display: block;
   color: #fff;
-  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-size: 0.92rem;
+  font-weight: 650;
+}
+.quote-card__author small {
+  display: block;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.82rem;
+}
+.quotes-cta { text-align: center; margin-top: 2.75rem; }
+
+/* ---- Why ---- */
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  gap: 2rem 2.5rem;
+}
+.why-card__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background: var(--plum-50);
+  border: 1px solid var(--plum-100);
+  font-size: 1.4rem;
   margin-bottom: 1rem;
 }
-.cta-section__desc {
-  color: rgba(255,255,255,0.7);
-  font-size: 1.1rem;
-  margin-bottom: 2rem;
+.why-card__title { font-size: 1.1rem; margin-bottom: 0.45rem; }
+.why-card__desc { color: var(--color-muted); font-size: 0.93rem; margin: 0; }
+
+.faq-more {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 0.93rem;
+  color: var(--color-muted);
+}
+.faq-more a {
+  color: var(--plum-700);
+  font-weight: 650;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
-/* ---- Responsive ---- */
 @media (max-width: 767px) {
-  .talent__grid {
-    grid-template-columns: 1fr;
-  }
-  .hero__content {
-    padding: 8rem 1rem 3rem;
-  }
+  .hero { min-height: auto; padding: calc(var(--header-height) + 2.5rem) 0 3.5rem; }
+  .hero__actions .btn { width: 100%; max-width: 320px; }
+  .stats-section { margin-top: 0; }
+  .roles-grid, .talent-grid { grid-template-columns: 1fr; }
 }
 </style>
