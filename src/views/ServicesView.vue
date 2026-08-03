@@ -17,7 +17,7 @@
         <SectionHeading
           eyebrow="Practice areas"
           title="Where we go deep"
-          sub="Indicative starting rates below. Final pricing depends on seniority and the overlap hours you need."
+          sub="Every area runs on the same flat monthly fee — no role costs extra to recruit for."
         />
         <div class="cat-grid">
           <article v-for="(cat, i) in roleCategories" :key="cat.slug" class="cat-card card" v-reveal="i * 70">
@@ -25,7 +25,7 @@
               <span class="cat-card__icon" aria-hidden="true">{{ cat.icon }}</span>
               <div>
                 <h2 class="cat-card__title">{{ cat.title }}</h2>
-                <span class="cat-card__from">From ${{ cat.from.toLocaleString() }}/month</span>
+                <span class="cat-card__from">{{ cat.roles.length }} common roles</span>
               </div>
             </header>
             <p class="cat-card__summary">{{ cat.summary }}</p>

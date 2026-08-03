@@ -51,7 +51,7 @@
             <span class="role-card__icon" aria-hidden="true">{{ cat.icon }}</span>
             <h3 class="role-card__title">{{ cat.title }}</h3>
             <p class="role-card__desc">{{ cat.summary }}</p>
-            <span class="role-card__from">From ${{ cat.from.toLocaleString() }}/mo</span>
+            <span class="role-card__from">Same flat rate →</span>
           </router-link>
         </div>
       </div>
@@ -202,7 +202,7 @@ const faqs = [
   { q: 'What exactly does Dubblestack do?', a: 'We are an international staff augmentation service. We manage recruiting, vetting, testing, and hiring of global talent on your behalf, then act as employer of record so the professional is properly and legally employed. You select who you work with; we handle everything around it.' },
   { q: 'What is the mission behind the company?', a: 'We are committed to creating equal opportunity for talent worldwide. Our aim is to let people stay in their home countries while earning a life-changing income, supporting their families and contributing to their local economies rather than having to emigrate to access good work.' },
   { q: 'How do you source talent?', a: 'We have recruiting teams based in Venezuela, Peru, Nigeria, and the Philippines. They work through local universities, professional networks, and referrals to source, test, and interview candidates against your specific role requirements.' },
-  { q: 'What does it cost?', a: 'One flat monthly fee per hire, starting around $1,200/month depending on the role and seniority. That figure covers the professional\'s full compensation, local payroll and benefits, and our recruiting and management work. There are no separate recruiting or onboarding charges.' },
+  { q: 'What does it cost?', a: 'One flat monthly fee per hire — the same simple structure for every role we staff. It covers the professional\'s full compensation, local payroll and benefits, and our recruiting and management work. There are no placement fees, recruiting fees, or onboarding charges. Send us the role and we quote a specific figure, usually within one business day.' },
   { q: 'What are the working hours?', a: 'Whatever overlap you need. Because our recruiting teams span several regions, we can source candidates aligned to almost any time zone. Coverage far outside a professional\'s local hours carries a shift differential, quoted up front.' },
   { q: 'Full-time or part-time?', a: 'Both. Most placements are full-time, but we staff part-time and contract engagements where the role genuinely warrants it.' },
   { q: 'Do I have to handle legal or tax paperwork?', a: 'No. We take that on. You share requirements, interview candidates, and choose your hire — contracts, tax withholding, statutory benefits, and compliance in the professional\'s country are handled on our side.' },

@@ -72,7 +72,7 @@
               </div>
             </div>
             <div class="opening__side">
-              <span class="opening__pay">{{ job.pay }}</span>
+              <span class="opening__terms">{{ job.terms }}</span>
               <router-link to="/profile-login" class="btn btn--outline btn--sm">Apply</router-link>
             </div>
           </article>
@@ -119,13 +119,14 @@ const benefits = [
 ]
 
 // ⚠️ PLACEHOLDER — swap for the live vacancy list before launch.
+// Compensation is discussed with candidates directly rather than listed here.
 const openings = [
-  { title: 'Senior Staff Accountant', category: 'Finance', location: 'Peru · Remote', hours: 'US Eastern overlap', pay: '$1,600–2,100 / mo' },
-  { title: 'Full-Stack Engineer (React / Node)', category: 'Engineering', location: 'Nigeria · Remote', hours: 'European overlap', pay: '$2,400–3,200 / mo' },
-  { title: 'Customer Support Specialist', category: 'Customer Success', location: 'Philippines · Remote', hours: 'APAC + US West', pay: '$1,100–1,500 / mo' },
-  { title: 'Executive Assistant', category: 'Operations', location: 'Venezuela · Remote', hours: 'US Central overlap', pay: '$1,000–1,400 / mo' },
-  { title: 'Paid Media Buyer', category: 'Marketing', location: 'Any hub · Remote', hours: 'Flexible', pay: '$1,500–2,000 / mo' },
-  { title: 'Paralegal (Commercial Contracts)', category: 'Legal', location: 'Venezuela · Remote', hours: 'US Eastern overlap', pay: '$1,400–1,900 / mo' },
+  { title: 'Senior Staff Accountant', category: 'Finance', location: 'Peru · Remote', hours: 'US Eastern overlap', terms: 'Full-time' },
+  { title: 'Full-Stack Engineer (React / Node)', category: 'Engineering', location: 'Nigeria · Remote', hours: 'European overlap', terms: 'Full-time' },
+  { title: 'Customer Support Specialist', category: 'Customer Success', location: 'Philippines · Remote', hours: 'APAC + US West', terms: 'Full-time' },
+  { title: 'Executive Assistant', category: 'Operations', location: 'Venezuela · Remote', hours: 'US Central overlap', terms: 'Full-time' },
+  { title: 'Paid Media Buyer', category: 'Marketing', location: 'Any hub · Remote', hours: 'Flexible', terms: 'Part-time or full-time' },
+  { title: 'Paralegal (Commercial Contracts)', category: 'Legal', location: 'Venezuela · Remote', hours: 'US Eastern overlap', terms: 'Full-time' },
 ]
 
 const talentFaqs = [
@@ -234,10 +235,10 @@ const talentFaqs = [
   align-items: center;
   gap: 1.25rem;
 }
-.opening__pay {
-  font-size: 0.92rem;
-  font-weight: 700;
-  color: var(--plum-700);
+.opening__terms {
+  font-size: 0.88rem;
+  font-weight: 650;
+  color: var(--color-light);
   white-space: nowrap;
 }
 .openings__note {
