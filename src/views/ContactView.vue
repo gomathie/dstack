@@ -117,7 +117,19 @@
               <p v-if="errors.message" id="err-message" class="form__error">{{ errors.message }}</p>
             </div>
 
-            <button type="submit" class="btn btn--primary btn--block btn--lg">Send message</button>
+            <!-- Honeypot: hidden from people, irresistible to bots. -->
+            <div class="honeypot" aria-hidden="true">
+              <label for="c-website">Website</label>
+              <input id="c-website" v-model="form.company_website" type="text" tabindex="-1" autocomplete="off" />
+            </div>
+
+            <TurnstileWidget ref="turnstile" @token="turnstileToken = $event" />
+
+            <p v-if="serverError" class="form__server-error" role="alert">{{ serverError }}</p>
+
+            <button type="submit" class="btn btn--primary btn--block btn--lg" :disabled="sending">
+              {{ sending ? 'Sending…' : 'Send message' }}
+            </button>
             <p class="form__note">
               We use this only to reply to you. See our
               <router-link to="/privacy-policy">privacy policy</router-link>.
@@ -131,6 +143,8 @@
 
 <script setup>
 import { reactive, ref } from 'vue'
+import TurnstileWidget from '../components/TurnstileWidget.vue'
+import { submitForm } from '../lib/api'
 import { company } from '../data/site'
 
 const form = reactive({
@@ -139,12 +153,17 @@ const form = reactive({
   company: '',
   topic: 'hiring',
   message: '',
+  company_website: '', // honeypot — must stay empty
 })
 
 const errors = reactive({ name: '', email: '', message: '' })
 const sent = ref(false)
+const sending = ref(false)
+const serverError = ref('')
+const turnstile = ref(null)
+const turnstileToken = ref('')
 
-function submit() {
+async function submit() {
   errors.name = form.name ? '' : 'Please tell us your name.'
   errors.email = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(form.email)
     ? ''
@@ -155,14 +174,31 @@ function submit() {
 
   if (errors.name || errors.email || errors.message) return
 
-  // NOTE: static site — there is no backend wired up yet. Point this at a form
-  // endpoint (Cloudflare Pages Function, Formspree, etc.) before launch.
-  sent.value = true
+  sending.value = true
+  serverError.value = ''
+
+  const res = await submitForm('contact', { ...form, turnstileToken: turnstileToken.value })
+
+  sending.value = false
+  if (res.ok) {
+    sent.value = true
+    return
+  }
+
+  serverError.value = res.error
+  // Surface any per-field problems the server caught that we did not.
+  if (res.errors) for (const [k, v] of Object.entries(res.errors)) if (k in errors) errors[k] = v
+  // A token is single-use; get a fresh one before the next attempt.
+  turnstile.value?.reset()
+  turnstileToken.value = ''
 }
 
 function reset() {
-  Object.assign(form, { name: '', email: '', company: '', topic: 'hiring', message: '' })
+  Object.assign(form, {
+    name: '', email: '', company: '', topic: 'hiring', message: '', company_website: '',
+  })
   Object.assign(errors, { name: '', email: '', message: '' })
+  serverError.value = ''
   sent.value = false
 }
 </script>
@@ -258,6 +294,25 @@ select.form__input { cursor: pointer; }
   color: var(--color-light);
   text-align: center;
 }
+/* Off-screen rather than display:none — some bots skip hidden fields. */
+.honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.form__server-error {
+  margin: 0 0 1rem;
+  padding: 0.8rem 1rem;
+  background: #FDECEC;
+  border: 1px solid #F5C6C6;
+  border-radius: var(--radius-sm);
+  color: #9B2C2C;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+.btn:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
 .form__note a { color: var(--plum-700); text-decoration: underline; text-underline-offset: 2px; }
 
 /* Success state */

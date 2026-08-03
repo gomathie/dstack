@@ -163,8 +163,18 @@
               </div>
             </fieldset>
 
-            <button type="submit" class="btn btn--primary btn--block btn--lg">
-              Send request
+            <!-- Honeypot: hidden from people, irresistible to bots. -->
+            <div class="honeypot" aria-hidden="true">
+              <label for="h-website">Website</label>
+              <input id="h-website" v-model="form.company_website" type="text" tabindex="-1" autocomplete="off" />
+            </div>
+
+            <TurnstileWidget ref="turnstile" @token="turnstileToken = $event" />
+
+            <p v-if="serverError" class="form__server-error" role="alert">{{ serverError }}</p>
+
+            <button type="submit" class="btn btn--primary btn--block btn--lg" :disabled="sending">
+              {{ sending ? 'Sending…' : 'Send request' }}
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
@@ -216,18 +226,26 @@
 
 <script setup>
 import { reactive, ref } from 'vue'
+import TurnstileWidget from '../components/TurnstileWidget.vue'
+import { submitForm } from '../lib/api'
 import { roleCategories } from '../data/roles'
 
-const form = reactive({
+const BLANK = {
   company: '', name: '', email: '', phone: '',
   role: '', category: '', seniority: '', timezone: '',
   type: 'full-time', count: '1', start: 'asap', details: '',
-})
+  company_website: '', // honeypot — must stay empty
+}
 
+const form = reactive({ ...BLANK })
 const errors = reactive({ company: '', name: '', email: '', role: '' })
 const sent = ref(false)
+const sending = ref(false)
+const serverError = ref('')
+const turnstile = ref(null)
+const turnstileToken = ref('')
 
-function submit() {
+async function submit() {
   errors.company = form.company ? '' : 'We need your company name.'
   errors.name = form.name ? '' : 'Please tell us your name.'
   errors.email = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(form.email)
@@ -237,18 +255,27 @@ function submit() {
 
   if (errors.company || errors.name || errors.email || errors.role) return
 
-  // NOTE: static site — no backend wired up yet. Point this at a form endpoint
-  // (Cloudflare Pages Function, Formspree, etc.) before launch.
-  sent.value = true
+  sending.value = true
+  serverError.value = ''
+
+  const res = await submitForm('hire', { ...form, turnstileToken: turnstileToken.value })
+
+  sending.value = false
+  if (res.ok) {
+    sent.value = true
+    return
+  }
+
+  serverError.value = res.error
+  if (res.errors) for (const [k, v] of Object.entries(res.errors)) if (k in errors) errors[k] = v
+  turnstile.value?.reset()
+  turnstileToken.value = ''
 }
 
 function reset() {
-  Object.assign(form, {
-    company: '', name: '', email: '', phone: '',
-    role: '', category: '', seniority: '', timezone: '',
-    type: 'full-time', count: '1', start: 'asap', details: '',
-  })
+  Object.assign(form, BLANK)
   Object.assign(errors, { company: '', name: '', email: '', role: '' })
+  serverError.value = ''
   sent.value = false
 }
 
@@ -332,6 +359,25 @@ select.form__input { cursor: pointer; }
   text-align: center;
 }
 .form__note a { color: var(--plum-700); text-decoration: underline; text-underline-offset: 2px; }
+/* Off-screen rather than display:none — some bots skip hidden fields. */
+.honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.form__server-error {
+  margin: 0 0 1rem;
+  padding: 0.8rem 1rem;
+  background: #FDECEC;
+  border: 1px solid #F5C6C6;
+  border-radius: var(--radius-sm);
+  color: #9B2C2C;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+.btn:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
 
 /* Success */
 .sent { text-align: center; padding: 2rem 0; }
