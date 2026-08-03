@@ -12,7 +12,7 @@
         <div class="blog-grid">
           <article v-for="(post, i) in posts" :key="i" class="blog-card card">
             <div class="blog-card__image-wrap">
-              <img :src="post.image" :alt="post.title" class="blog-card__image" />
+              <img :src="post.image" :alt="post.title" class="blog-card__image" loading="lazy" decoding="async" />
               <div class="blog-card__overlay"></div>
             </div>
             <div class="blog-card__body">
@@ -35,8 +35,10 @@ const posts = [
   { title: 'Developing Remote Work Policies: Guidelines for Startups', image: '/images/2147768643.webp', link: 'https://dubblestack.com/developing-remote-work-policies-guidelines-for-startups' },
   { title: 'Guidelines for providing feedback to remote team members', image: '/images/117525.jpg', link: 'https://dubblestack.com/guidelines-for-providing-feedback-to-remote-team-members' },
   { title: 'Strategies for Successfully Managing a Multigenerational Workforce', image: '/images/125684.jpg', link: 'https://dubblestack.com/strategies-for-successfully-managing-a-multigenerational-workforce' },
-  { title: '20 Strategies for Successfully Managing Remote Teams', image: '/images/2149321602-2.webp', link: 'https://dubblestack.com/20-strategies-for-successfully-managing-remote-teams' },
-  { title: 'Enhancing Employee Retention: Effective Strategies and Best Practices', image: '/images/2151007886.webp', link: 'https://dubblestack.com/enhancing-employee-retention-effective-strategies-and-best-practices' },
+  // NOTE: the original assets for these two posts 404'd when the site was scraped.
+  // These are stand-ins reused from the homepage — swap in the real images when available.
+  { title: '20 Strategies for Successfully Managing Remote Teams', image: '/images/2150171838.jpg', link: 'https://dubblestack.com/20-strategies-for-successfully-managing-remote-teams' },
+  { title: 'Enhancing Employee Retention: Effective Strategies and Best Practices', image: '/images/2150312701.jpg', link: 'https://dubblestack.com/enhancing-employee-retention-effective-strategies-and-best-practices' },
 ]
 </script>
 
