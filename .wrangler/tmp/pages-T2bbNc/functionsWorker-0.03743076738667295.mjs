@@ -1,7 +1,7 @@
 var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
 
-// ../.wrangler/tmp/bundle-uJklhd/checked-fetch.js
+// ../.wrangler/tmp/bundle-VQ3yY7/checked-fetch.js
 var urls = /* @__PURE__ */ new Set();
 function checkURL(request, init) {
   const url = request instanceof URL ? request : new URL(
@@ -27,7 +27,7 @@ globalThis.fetch = new Proxy(globalThis.fetch, {
   }
 });
 
-// ../.wrangler/tmp/bundle-uJklhd/strip-cf-connecting-ip-header.js
+// ../.wrangler/tmp/bundle-VQ3yY7/strip-cf-connecting-ip-header.js
 function stripCfConnectingIPHeader(input, init) {
   const request = new Request(input, init);
   request.headers.delete("CF-Connecting-IP");
@@ -95,6 +95,15 @@ async function verifyTurnstile(token, secret, ip) {
   return out.success === true;
 }
 __name(verifyTurnstile, "verifyTurnstile");
+function onRequest(context) {
+  if (context.request.method === "POST")
+    return onRequestPost(context);
+  return new Response(JSON.stringify({ ok: false, error: "Method not allowed." }), {
+    status: 405,
+    headers: { "content-type": "application/json; charset=utf-8", allow: "POST" }
+  });
+}
+__name(onRequest, "onRequest");
 async function onRequestPost({ request, env }) {
   const mailTo = env.MAIL_TO || DEFAULT_MAIL_TO;
   if (!env.RESEND_API_KEY || !env.MAIL_FROM) {
@@ -187,6 +196,13 @@ var routes = [
     method: "POST",
     middlewares: [],
     modules: [onRequestPost]
+  },
+  {
+    routePath: "/api/contact",
+    mountPath: "/api",
+    method: "",
+    middlewares: [],
+    modules: [onRequest]
   }
 ];
 
@@ -677,7 +693,7 @@ var jsonError = /* @__PURE__ */ __name(async (request, env, _ctx, middlewareCtx)
 }, "jsonError");
 var middleware_miniflare3_json_error_default = jsonError;
 
-// ../.wrangler/tmp/bundle-uJklhd/middleware-insertion-facade.js
+// ../.wrangler/tmp/bundle-VQ3yY7/middleware-insertion-facade.js
 var __INTERNAL_WRANGLER_MIDDLEWARE__ = [
   middleware_ensure_req_body_drained_default,
   middleware_miniflare3_json_error_default
@@ -709,7 +725,7 @@ function __facade_invoke__(request, env, ctx, dispatch, finalMiddleware) {
 }
 __name(__facade_invoke__, "__facade_invoke__");
 
-// ../.wrangler/tmp/bundle-uJklhd/middleware-loader.entry.ts
+// ../.wrangler/tmp/bundle-VQ3yY7/middleware-loader.entry.ts
 var __Facade_ScheduledController__ = class {
   constructor(scheduledTime, cron, noRetry) {
     this.scheduledTime = scheduledTime;

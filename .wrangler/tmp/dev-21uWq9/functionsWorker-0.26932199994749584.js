@@ -1,95 +1,15 @@
 var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
 
-// .wrangler/tmp/bundle-gNtG9k/checked-fetch.js
-var urls = /* @__PURE__ */ new Set();
-function checkURL(request, init) {
-  const url = request instanceof URL ? request : new URL(
-    (typeof request === "string" ? new Request(request, init) : request).url
-  );
-  if (url.port && url.port !== "443" && url.protocol === "https:") {
-    if (!urls.has(url.toString())) {
-      urls.add(url.toString());
-      console.warn(
-        `WARNING: known issue with \`fetch()\` requests to custom HTTPS ports in published Workers:
- - ${url.toString()} - the custom port will be ignored when the Worker is published using the \`wrangler deploy\` command.
-`
-      );
-    }
-  }
-}
-__name(checkURL, "checkURL");
-globalThis.fetch = new Proxy(globalThis.fetch, {
-  apply(target, thisArg, argArray) {
-    const [request, init] = argArray;
-    checkURL(request, init);
-    return Reflect.apply(target, thisArg, argArray);
-  }
-});
-
-// .wrangler/tmp/bundle-gNtG9k/strip-cf-connecting-ip-header.js
-function stripCfConnectingIPHeader(input, init) {
-  const request = new Request(input, init);
-  request.headers.delete("CF-Connecting-IP");
-  return request;
-}
-__name(stripCfConnectingIPHeader, "stripCfConnectingIPHeader");
-globalThis.fetch = new Proxy(globalThis.fetch, {
-  apply(target, thisArg, argArray) {
-    return Reflect.apply(target, thisArg, [
-      stripCfConnectingIPHeader.apply(null, argArray)
-    ]);
-  }
-});
-
-// .wrangler/tmp/pages-T2bbNc/functionsWorker-0.03743076738667295.mjs
+// .wrangler/tmp/pages-7VYmsv/functionsWorker-0.26932199994749584.mjs
 var __defProp2 = Object.defineProperty;
 var __name2 = /* @__PURE__ */ __name((target, value) => __defProp2(target, "name", { value, configurable: true }), "__name");
-var urls2 = /* @__PURE__ */ new Set();
-function checkURL2(request, init) {
-  const url = request instanceof URL ? request : new URL(
-    (typeof request === "string" ? new Request(request, init) : request).url
-  );
-  if (url.port && url.port !== "443" && url.protocol === "https:") {
-    if (!urls2.has(url.toString())) {
-      urls2.add(url.toString());
-      console.warn(
-        `WARNING: known issue with \`fetch()\` requests to custom HTTPS ports in published Workers:
- - ${url.toString()} - the custom port will be ignored when the Worker is published using the \`wrangler deploy\` command.
-`
-      );
-    }
-  }
-}
-__name(checkURL2, "checkURL");
-__name2(checkURL2, "checkURL");
-globalThis.fetch = new Proxy(globalThis.fetch, {
-  apply(target, thisArg, argArray) {
-    const [request, init] = argArray;
-    checkURL2(request, init);
-    return Reflect.apply(target, thisArg, argArray);
-  }
-});
-function stripCfConnectingIPHeader2(input, init) {
-  const request = new Request(input, init);
-  request.headers.delete("CF-Connecting-IP");
-  return request;
-}
-__name(stripCfConnectingIPHeader2, "stripCfConnectingIPHeader");
-__name2(stripCfConnectingIPHeader2, "stripCfConnectingIPHeader");
-globalThis.fetch = new Proxy(globalThis.fetch, {
-  apply(target, thisArg, argArray) {
-    return Reflect.apply(target, thisArg, [
-      stripCfConnectingIPHeader2.apply(null, argArray)
-    ]);
-  }
-});
 var MAX_BODY_BYTES = 50 * 1024;
 var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 var DEFAULT_MAIL_TO = "hello@dubblestack.com";
 var FORMS = {
   contact: {
-    subject: (d) => `Contact form \u2014 ${d.topic || "general"} \u2014 ${d.name}`,
+    subject: /* @__PURE__ */ __name2((d) => `Contact form \u2014 ${d.topic || "general"} \u2014 ${d.name}`, "subject"),
     fields: [
       { key: "name", label: "Name", required: true },
       { key: "email", label: "Email", required: true, email: true },
@@ -99,7 +19,7 @@ var FORMS = {
     ]
   },
   hire: {
-    subject: (d) => `Hiring request \u2014 ${d.role} \u2014 ${d.company}`,
+    subject: /* @__PURE__ */ __name2((d) => `Hiring request \u2014 ${d.role} \u2014 ${d.company}`, "subject"),
     fields: [
       { key: "company", label: "Company", required: true },
       { key: "name", label: "Name", required: true },
@@ -126,8 +46,7 @@ async function verifyTurnstile(token, secret, ip) {
   const body = new FormData();
   body.append("secret", secret);
   body.append("response", token || "");
-  if (ip)
-    body.append("remoteip", ip);
+  if (ip) body.append("remoteip", ip);
   const res = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
     method: "POST",
     body
@@ -138,8 +57,7 @@ async function verifyTurnstile(token, secret, ip) {
 __name(verifyTurnstile, "verifyTurnstile");
 __name2(verifyTurnstile, "verifyTurnstile");
 function onRequest(context) {
-  if (context.request.method === "POST")
-    return onRequestPost(context);
+  if (context.request.method === "POST") return onRequestPost(context);
   return new Response(JSON.stringify({ ok: false, error: "Method not allowed." }), {
     status: 405,
     headers: { "content-type": "application/json; charset=utf-8", allow: "POST" }
@@ -154,8 +72,7 @@ async function onRequestPost({ request, env }) {
     return json(500, { ok: false, error: "Form is not configured yet. Please email us directly." });
   }
   const raw = await request.text();
-  if (raw.length > MAX_BODY_BYTES)
-    return json(413, { ok: false, error: "Submission too large." });
+  if (raw.length > MAX_BODY_BYTES) return json(413, { ok: false, error: "Submission too large." });
   let payload;
   try {
     payload = JSON.parse(raw);
@@ -163,33 +80,26 @@ async function onRequestPost({ request, env }) {
     return json(400, { ok: false, error: "Malformed request." });
   }
   const spec = FORMS[payload?.form];
-  if (!spec)
-    return json(400, { ok: false, error: "Unknown form." });
-  if (payload.company_website)
-    return json(200, { ok: true });
+  if (!spec) return json(400, { ok: false, error: "Unknown form." });
+  if (payload.company_website) return json(200, { ok: true });
   if (env.TURNSTILE_SECRET_KEY) {
     const ok = await verifyTurnstile(
       payload.turnstileToken,
       env.TURNSTILE_SECRET_KEY,
       request.headers.get("CF-Connecting-IP")
     );
-    if (!ok)
-      return json(400, { ok: false, error: "Verification failed. Please try again." });
+    if (!ok) return json(400, { ok: false, error: "Verification failed. Please try again." });
   }
   const data = {};
   const errors = {};
   for (const f of spec.fields) {
     const value = typeof payload[f.key] === "string" ? payload[f.key].trim() : "";
-    if (f.required && !value)
-      errors[f.key] = "Required.";
-    else if (value && f.email && !EMAIL_RE.test(value))
-      errors[f.key] = "Not a valid email address.";
-    else if (value && f.minLength && value.length < f.minLength)
-      errors[f.key] = "Too short.";
+    if (f.required && !value) errors[f.key] = "Required.";
+    else if (value && f.email && !EMAIL_RE.test(value)) errors[f.key] = "Not a valid email address.";
+    else if (value && f.minLength && value.length < f.minLength) errors[f.key] = "Too short.";
     data[f.key] = value.slice(0, 5e3);
   }
-  if (Object.keys(errors).length)
-    return json(422, { ok: false, error: "Please check the form.", errors });
+  if (Object.keys(errors).length) return json(422, { ok: false, error: "Please check the form.", errors });
   const rows = spec.fields.filter((f) => data[f.key]).map(
     (f) => `<tr>
            <td style="padding:6px 14px 6px 0;color:#6B6274;font:600 13px system-ui,sans-serif;vertical-align:top;white-space:nowrap">${esc(f.label)}</td>
@@ -666,9 +576,9 @@ var pages_template_worker_default = {
           },
           env,
           waitUntil: workerContext.waitUntil.bind(workerContext),
-          passThroughOnException: () => {
+          passThroughOnException: /* @__PURE__ */ __name2(() => {
             isFailOpen = true;
-          }
+          }, "passThroughOnException")
         };
         const response = await handler(context);
         if (!(response instanceof Response)) {
@@ -732,10 +642,16 @@ var jsonError = /* @__PURE__ */ __name2(async (request, env, _ctx, middlewareCtx
     return await middlewareCtx.next(request, env);
   } catch (e) {
     const error = reduceError(e);
-    return Response.json(error, {
-      status: 500,
-      headers: { "MF-Experimental-Error-Stack": "true" }
-    });
+    const body = JSON.stringify(error);
+    const headers = {
+      "Content-Type": "application/json",
+      "MF-Experimental-Error-Stack": "true"
+    };
+    const encoded = encodeURIComponent(body);
+    if (encoded.length <= 8192) {
+      headers["MF-Experimental-Error-Stack-Payload"] = encoded;
+    }
+    return new Response(body, { status: 500, headers });
   }
 }, "jsonError");
 var middleware_miniflare3_json_error_default = jsonError;
@@ -770,21 +686,28 @@ function __facade_invoke__(request, env, ctx, dispatch, finalMiddleware) {
 }
 __name(__facade_invoke__, "__facade_invoke__");
 __name2(__facade_invoke__, "__facade_invoke__");
-var __Facade_ScheduledController__ = /* @__PURE__ */ __name(class {
+var __Facade_ScheduledController__ = class ___Facade_ScheduledController__ {
+  static {
+    __name(this, "___Facade_ScheduledController__");
+  }
   constructor(scheduledTime, cron, noRetry) {
     this.scheduledTime = scheduledTime;
     this.cron = cron;
     this.#noRetry = noRetry;
   }
+  scheduledTime;
+  cron;
+  static {
+    __name2(this, "__Facade_ScheduledController__");
+  }
   #noRetry;
   noRetry() {
-    if (!(this instanceof __Facade_ScheduledController__)) {
+    if (!(this instanceof ___Facade_ScheduledController__)) {
       throw new TypeError("Illegal invocation");
     }
     this.#noRetry();
   }
-}, "__Facade_ScheduledController__");
-__name2(__Facade_ScheduledController__, "__Facade_ScheduledController__");
+};
 function wrapExportedHandler(worker) {
   if (__INTERNAL_WRANGLER_MIDDLEWARE__ === void 0 || __INTERNAL_WRANGLER_MIDDLEWARE__.length === 0) {
     return worker;
@@ -826,15 +749,15 @@ function wrapWorkerEntrypoint(klass) {
     __facade_register__(middleware);
   }
   return class extends klass {
-    #fetchDispatcher = (request, env, ctx) => {
+    #fetchDispatcher = /* @__PURE__ */ __name2((request, env, ctx) => {
       this.env = env;
       this.ctx = ctx;
       if (super.fetch === void 0) {
         throw new Error("Entrypoint class does not define a fetch() function.");
       }
       return super.fetch(request);
-    };
-    #dispatcher = (type, init) => {
+    }, "#fetchDispatcher");
+    #dispatcher = /* @__PURE__ */ __name2((type, init) => {
       if (type === "scheduled" && super.scheduled !== void 0) {
         const controller = new __Facade_ScheduledController__(
           Date.now(),
@@ -844,7 +767,7 @@ function wrapWorkerEntrypoint(klass) {
         );
         return super.scheduled(controller);
       }
-    };
+    }, "#dispatcher");
     fetch(request) {
       return __facade_invoke__(
         request,
@@ -866,7 +789,7 @@ if (typeof middleware_insertion_facade_default === "object") {
 }
 var middleware_loader_entry_default = WRAPPED_ENTRY;
 
-// ../../../AppData/Local/npm-cache/_npx/0eedb5afd4158ff3/node_modules/wrangler/templates/middleware/middleware-ensure-req-body-drained.ts
+// ../../../AppData/Local/npm-cache/_npx/c943b712072b77c4/node_modules/wrangler/templates/middleware/middleware-ensure-req-body-drained.ts
 var drainBody2 = /* @__PURE__ */ __name(async (request, env, _ctx, middlewareCtx) => {
   try {
     return await middlewareCtx.next(request, env);
@@ -884,7 +807,7 @@ var drainBody2 = /* @__PURE__ */ __name(async (request, env, _ctx, middlewareCtx
 }, "drainBody");
 var middleware_ensure_req_body_drained_default2 = drainBody2;
 
-// ../../../AppData/Local/npm-cache/_npx/0eedb5afd4158ff3/node_modules/wrangler/templates/middleware/middleware-miniflare3-json-error.ts
+// ../../../AppData/Local/npm-cache/_npx/c943b712072b77c4/node_modules/wrangler/templates/middleware/middleware-miniflare3-json-error.ts
 function reduceError2(e) {
   return {
     name: e?.name,
@@ -899,22 +822,28 @@ var jsonError2 = /* @__PURE__ */ __name(async (request, env, _ctx, middlewareCtx
     return await middlewareCtx.next(request, env);
   } catch (e) {
     const error = reduceError2(e);
-    return Response.json(error, {
-      status: 500,
-      headers: { "MF-Experimental-Error-Stack": "true" }
-    });
+    const body = JSON.stringify(error);
+    const headers = {
+      "Content-Type": "application/json",
+      "MF-Experimental-Error-Stack": "true"
+    };
+    const encoded = encodeURIComponent(body);
+    if (encoded.length <= 8192) {
+      headers["MF-Experimental-Error-Stack-Payload"] = encoded;
+    }
+    return new Response(body, { status: 500, headers });
   }
 }, "jsonError");
 var middleware_miniflare3_json_error_default2 = jsonError2;
 
-// .wrangler/tmp/bundle-gNtG9k/middleware-insertion-facade.js
+// .wrangler/tmp/bundle-BCPC2k/middleware-insertion-facade.js
 var __INTERNAL_WRANGLER_MIDDLEWARE__2 = [
   middleware_ensure_req_body_drained_default2,
   middleware_miniflare3_json_error_default2
 ];
 var middleware_insertion_facade_default2 = middleware_loader_entry_default;
 
-// ../../../AppData/Local/npm-cache/_npx/0eedb5afd4158ff3/node_modules/wrangler/templates/middleware/common.ts
+// ../../../AppData/Local/npm-cache/_npx/c943b712072b77c4/node_modules/wrangler/templates/middleware/common.ts
 var __facade_middleware__2 = [];
 function __facade_register__2(...args) {
   __facade_middleware__2.push(...args.flat());
@@ -939,22 +868,26 @@ function __facade_invoke__2(request, env, ctx, dispatch, finalMiddleware) {
 }
 __name(__facade_invoke__2, "__facade_invoke__");
 
-// .wrangler/tmp/bundle-gNtG9k/middleware-loader.entry.ts
-var __Facade_ScheduledController__2 = class {
+// .wrangler/tmp/bundle-BCPC2k/middleware-loader.entry.ts
+var __Facade_ScheduledController__2 = class ___Facade_ScheduledController__2 {
   constructor(scheduledTime, cron, noRetry) {
     this.scheduledTime = scheduledTime;
     this.cron = cron;
     this.#noRetry = noRetry;
   }
+  scheduledTime;
+  cron;
+  static {
+    __name(this, "__Facade_ScheduledController__");
+  }
   #noRetry;
   noRetry() {
-    if (!(this instanceof __Facade_ScheduledController__2)) {
+    if (!(this instanceof ___Facade_ScheduledController__2)) {
       throw new TypeError("Illegal invocation");
     }
     this.#noRetry();
   }
 };
-__name(__Facade_ScheduledController__2, "__Facade_ScheduledController__");
 function wrapExportedHandler2(worker) {
   if (__INTERNAL_WRANGLER_MIDDLEWARE__2 === void 0 || __INTERNAL_WRANGLER_MIDDLEWARE__2.length === 0) {
     return worker;
@@ -995,15 +928,15 @@ function wrapWorkerEntrypoint2(klass) {
     __facade_register__2(middleware);
   }
   return class extends klass {
-    #fetchDispatcher = (request, env, ctx) => {
+    #fetchDispatcher = /* @__PURE__ */ __name((request, env, ctx) => {
       this.env = env;
       this.ctx = ctx;
       if (super.fetch === void 0) {
         throw new Error("Entrypoint class does not define a fetch() function.");
       }
       return super.fetch(request);
-    };
-    #dispatcher = (type, init) => {
+    }, "#fetchDispatcher");
+    #dispatcher = /* @__PURE__ */ __name((type, init) => {
       if (type === "scheduled" && super.scheduled !== void 0) {
         const controller = new __Facade_ScheduledController__2(
           Date.now(),
@@ -1013,7 +946,7 @@ function wrapWorkerEntrypoint2(klass) {
         );
         return super.scheduled(controller);
       }
-    };
+    }, "#dispatcher");
     fetch(request) {
       return __facade_invoke__2(
         request,
@@ -1037,4 +970,4 @@ export {
   __INTERNAL_WRANGLER_MIDDLEWARE__2 as __INTERNAL_WRANGLER_MIDDLEWARE__,
   middleware_loader_entry_default2 as default
 };
-//# sourceMappingURL=functionsWorker-0.03743076738667295.js.map
+//# sourceMappingURL=functionsWorker-0.26932199994749584.js.map

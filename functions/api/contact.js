@@ -89,6 +89,21 @@ async function verifyTurnstile(token, secret, ip) {
   return out.success === true
 }
 
+/**
+ * Anything that is not a POST. Without this, Pages falls through to static
+ * assets and an API path answers GET with the SPA's HTML, which is confusing
+ * to anyone poking at it.
+ */
+export function onRequest(context) {
+  // Pages routes POST to onRequestPost; the delegation is belt-and-braces in
+  // case this catch-all is consulted first.
+  if (context.request.method === 'POST') return onRequestPost(context)
+  return new Response(JSON.stringify({ ok: false, error: 'Method not allowed.' }), {
+    status: 405,
+    headers: { 'content-type': 'application/json; charset=utf-8', allow: 'POST' },
+  })
+}
+
 export async function onRequestPost({ request, env }) {
   // --- Config guard: fail loudly in logs, vaguely to the caller. ---
   const mailTo = env.MAIL_TO || DEFAULT_MAIL_TO
