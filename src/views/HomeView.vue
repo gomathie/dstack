@@ -24,7 +24,7 @@
         <div class="talent__grid">
           <div v-for="(profile, i) in profiles" :key="i" class="talent-card card">
             <div class="talent-card__avatar-wrap">
-              <img :src="profile.avatar" :alt="profile.name" class="talent-card__avatar" />
+              <img :src="profile.avatar" :alt="profile.name" class="talent-card__avatar" loading="lazy" decoding="async" />
             </div>
             <div class="talent-card__info">
               <h3 class="talent-card__name">{{ profile.name }}</h3>
@@ -44,7 +44,7 @@
         <div class="how-it-works__steps">
           <div v-for="(step, i) in steps" :key="i" class="step-card">
             <div class="step-card__number">{{ i + 1 }}</div>
-            <img :src="step.image" :alt="step.title" class="step-card__image" />
+            <img :src="step.image" :alt="step.title" class="step-card__image" loading="lazy" decoding="async" />
             <h3 class="step-card__title">{{ step.title }}</h3>
             <p class="step-card__desc">{{ step.desc }}</p>
           </div>
