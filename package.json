@@ -18,5 +18,10 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.8",
     "vite": "^8.2.0"
+  },
+  "//": "@rolldown/binding-wasm32-wasi (via vite -> rolldown) declares these as hard deps but carries no os/cpu constraint, so Linux CI resolves it while macOS prunes it — npm then omits them from the lockfile and `npm ci` fails with 'Missing @emnapi/runtime from lock file'. Declaring them here keeps the lockfile self-consistent. Remove once rolldown fixes the upstream packaging.",
+  "optionalDependencies": {
+    "@emnapi/core": "2.0.0-alpha.3",
+    "@emnapi/runtime": "2.0.0-alpha.3"
   }
 }
