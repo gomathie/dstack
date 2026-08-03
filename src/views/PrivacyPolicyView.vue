@@ -1,86 +1,156 @@
 <template>
-  <div class="privacy-page">
-    <section class="privacy-hero">
-      <div class="container">
-        <h1 class="privacy-hero__title animate-fade-in-up">Privacy Policy</h1>
+  <div>
+    <section class="page-hero">
+      <div class="container page-hero__inner">
+        <span class="page-hero__eyebrow">Legal</span>
+        <h1 class="page-hero__title">Privacy Policy</h1>
+        <p class="page-hero__sub">Last updated {{ lastUpdated }}</p>
       </div>
     </section>
 
     <section class="section">
-      <div class="container">
-        <div class="privacy-content card">
+      <div class="container container--narrow">
+        <div class="notice">
+          <strong>Template notice.</strong> This policy describes intended practice and is not legal
+          advice. Have it reviewed against the laws that actually apply to you — including GDPR and
+          the data-protection regimes of every country you recruit in — before publishing.
+        </div>
+
+        <div class="prose">
           <h2>Who we are</h2>
-          <p>Our website address is: https://dubblestack.com.</p>
+          <p>
+            {{ company.name }} is a remote staffing and employer-of-record company operating recruiting
+            hubs in {{ company.hubs.join(', ') }}. This policy explains what personal data we collect,
+            why, and what you can do about it. Questions go to
+            <a :href="`mailto:${company.email}`">{{ company.email }}</a>.
+          </p>
 
-          <h2>Comments</h2>
-          <p>When visitors leave comments on the site we collect the data shown in the comments form, and also the visitor's IP address and browser user agent string to help spam detection.</p>
-          <p>An anonymized string created from your email address (also called a hash) may be provided to the Gravatar service to see if you are using it. The Gravatar service privacy policy is available here: https://automattic.com/privacy/. After approval of your comment, your profile picture is visible to the public in the context of your comment.</p>
+          <h2>Data we collect</h2>
+          <h3>From candidates</h3>
+          <ul>
+            <li>Contact details — name, email, phone, country and city of residence.</li>
+            <li>Professional information — CV, work history, education, certifications, portfolio links.</li>
+            <li>Assessment results — English evaluation, role-specific test outcomes, interview notes and scorecards.</li>
+            <li>Recorded introductions, where you have agreed to record one.</li>
+            <li>Where you are placed, the employment and payroll data required to employ and pay you lawfully.</li>
+          </ul>
 
-          <h2>Media</h2>
-          <p>If you upload images to the website, you should avoid uploading images with embedded location data (EXIF GPS) included. Visitors to the website can download and extract any location data from images on the website.</p>
+          <h3>From client companies</h3>
+          <ul>
+            <li>Business contact details for the people we work with at your company.</li>
+            <li>Role requirements, job descriptions, and interview feedback.</li>
+            <li>Billing information necessary to invoice and collect payment.</li>
+          </ul>
+
+          <h3>From website visitors</h3>
+          <ul>
+            <li>Anything you type into a contact or hiring form on this site.</li>
+            <li>Basic technical data — IP address, browser type, pages visited — used to keep the site working and to understand aggregate traffic.</li>
+          </ul>
+
+          <h2>Why we process it</h2>
+          <p>We use personal data only for the purposes below:</p>
+          <ul>
+            <li><strong>To match candidates with roles.</strong> Assessment and profile data is shared with prospective client companies during a search.</li>
+            <li><strong>To employ and pay placed professionals</strong>, including tax withholding and statutory benefits in their country.</li>
+            <li><strong>To deliver and administer our services</strong> to client companies, including invoicing.</li>
+            <li><strong>To respond to enquiries</strong> you send us.</li>
+            <li><strong>To meet legal obligations</strong>, including employment, tax, and anti-fraud requirements.</li>
+          </ul>
+          <p>
+            We do not sell personal data. We do not share candidate profiles with client companies
+            outside the context of a live search without the candidate's agreement.
+          </p>
 
           <h2>Cookies</h2>
-          <p>If you leave a comment on our site you may opt-in to saving your name, email address and website in cookies. These are for your convenience so that you do not have to fill in your details again when you leave another comment. These cookies will last for one year.</p>
-          <p>If you visit our login page, we will set a temporary cookie to determine if your browser accepts cookies. This cookie contains no personal data and is discarded when you close your browser.</p>
-          <p>When you log in, we will also set up several cookies to save your login information and your screen display choices. Login cookies last for two days, and screen options cookies last for a year. If you select "Remember Me", your login will persist for two weeks. If you log out of your account, the login cookies will be removed.</p>
-          <p>If you edit or publish an article, an additional cookie will be saved in your browser. This cookie includes no personal data and simply indicates the post ID of the article you just edited. It expires after 1 day.</p>
+          <p>
+            This site uses only the cookies necessary to make it function and to measure aggregate
+            traffic. We do not run advertising or cross-site tracking cookies. Your browser can block
+            cookies entirely; the site will continue to work.
+          </p>
 
-          <h2>Embedded content from other websites</h2>
-          <p>Articles on this site may include embedded content (e.g. videos, images, articles, etc.). Embedded content from other websites behaves in the exact same way as if the visitor has visited the other website.</p>
-          <p>These websites may collect data about you, use cookies, embed additional third-party tracking, and monitor your interaction with that embedded content, including tracking your interaction with the embedded content if you have an account and are logged in to that website.</p>
+          <h2>Who we share data with</h2>
+          <ul>
+            <li><strong>Client companies</strong> — candidate profiles and assessment results during an active search.</li>
+            <li><strong>Payroll and employer-of-record partners</strong> in the countries where we employ professionals.</li>
+            <li><strong>Service providers</strong> — hosting, email, and applicant-tracking tools, bound by contract to process data only on our instructions.</li>
+            <li><strong>Authorities</strong>, where we are legally required to disclose.</li>
+          </ul>
 
-          <h2>Who we share your data with</h2>
-          <p>If you request a password reset, your IP address will be included in the reset email.</p>
+          <h2>International transfers</h2>
+          <p>
+            Because we place professionals with companies abroad, personal data necessarily crosses
+            borders. Where data moves out of a jurisdiction with transfer restrictions, we rely on
+            appropriate safeguards such as standard contractual clauses.
+          </p>
 
-          <h2>How long we retain your data</h2>
-          <p>If you leave a comment, the comment and its metadata are retained indefinitely. This is so we can recognize and approve any follow-up comments automatically instead of holding them in a moderation queue.</p>
-          <p>For users that register on our website (if any), we also store the personal information they provide in their user profile. All users can see, edit, or delete their personal information at any time (except they cannot change their username). Website administrators can also see and edit that information.</p>
+          <h2>How long we keep it</h2>
+          <ul>
+            <li><strong>Candidate profiles</strong> — retained for two years from your last interaction, so we can contact you about suitable roles. You can ask us to delete sooner at any time.</li>
+            <li><strong>Employment and payroll records</strong> — retained as long as the law in the relevant country requires, typically five to seven years.</li>
+            <li><strong>Client and billing records</strong> — retained for the period required by tax and accounting rules.</li>
+            <li><strong>Website enquiries</strong> — retained for twelve months.</li>
+          </ul>
 
-          <h2>What rights you have over your data</h2>
-          <p>If you have an account on this site, or have left comments, you can request to receive an exported file of the personal data we hold about you, including any data you have provided to us. You can also request that we erase any personal data we hold about you. This does not include any data we are obliged to keep for administrative, legal, or security purposes.</p>
+          <h2>Your rights</h2>
+          <p>Subject to the law that applies to you, you can ask us to:</p>
+          <ul>
+            <li>Provide a copy of the personal data we hold about you.</li>
+            <li>Correct anything inaccurate.</li>
+            <li>Delete your data where we have no overriding legal reason to keep it.</li>
+            <li>Restrict or object to particular processing.</li>
+            <li>Export your data in a portable format.</li>
+          </ul>
+          <p>
+            Email <a :href="`mailto:${company.email}`">{{ company.email }}</a> and we will respond within
+            thirty days. If you are unhappy with our response, you can complain to your local data
+            protection authority.
+          </p>
 
-          <h2>Where your data is sent</h2>
-          <p>Visitor comments may be checked through an automated spam detection service.</p>
+          <h2>Security</h2>
+          <p>
+            Access to candidate and employment data is limited to staff who need it. Data is encrypted in
+            transit, accounts require multi-factor authentication, and we review access periodically. No
+            system is perfectly secure, and we will notify affected people promptly if a breach occurs.
+          </p>
+
+          <h2>Changes to this policy</h2>
+          <p>
+            We will post any changes on this page and update the date above. Material changes affecting
+            candidates or clients will also be notified by email.
+          </p>
+
+          <h2>Contact</h2>
+          <p>
+            {{ company.name }} — <a :href="`mailto:${company.email}`">{{ company.email }}</a>.
+            See also our <router-link to="/terms">Terms of Service</router-link>.
+          </p>
         </div>
       </div>
     </section>
   </div>
 </template>
 
-<style scoped>
-.privacy-hero {
-  background: linear-gradient(135deg, #66023c 0%, #2d0f3e 100%);
-  padding: 8rem 0 4rem;
-  text-align: center;
-}
-.privacy-hero__title {
-  color: #fff;
-  font-size: clamp(2rem, 5vw, 3rem);
-}
-.privacy-content {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 3rem;
-  line-height: 1.8;
-}
-.privacy-content h2 {
-  font-size: 1.4rem;
-  margin-top: 2.5rem;
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid var(--color-border);
-}
-.privacy-content h2:first-child {
-  margin-top: 0;
-}
-.privacy-content p {
-  color: var(--color-muted);
-  font-size: 0.95rem;
-}
+<script setup>
+import { company } from '../data/site'
 
-@media (max-width: 767px) {
-  .privacy-content {
-    padding: 1.5rem;
-  }
+const lastUpdated = new Date().toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+})
+</script>
+
+<style scoped>
+.notice {
+  background: var(--accent-100);
+  border: 1px solid rgba(13, 143, 136, 0.25);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+  font-size: 0.9rem;
+  color: var(--accent-600);
+  margin-bottom: 2.5rem;
+  line-height: 1.6;
 }
+.notice strong { color: var(--accent-600); }
 </style>

@@ -1,126 +1,236 @@
 <template>
-  <div class="blog-page">
-    <section class="blog-hero">
-      <div class="container">
-        <h1 class="blog-hero__title animate-fade-in-up">Blog</h1>
-        <p class="blog-hero__sub animate-fade-in-up delay-2">Insights on remote hiring, team management, and growing your business.</p>
+  <div>
+    <section class="page-hero">
+      <div class="container page-hero__inner">
+        <span class="page-hero__eyebrow">Blog</span>
+        <h1 class="page-hero__title">Notes on running a distributed team</h1>
+        <p class="page-hero__sub">
+          What we learn managing several hundred remote placements — written for the people
+          doing the managing.
+        </p>
       </div>
     </section>
 
     <section class="section">
       <div class="container">
-        <div class="blog-grid">
-          <article v-for="(post, i) in posts" :key="i" class="blog-card card">
-            <div class="blog-card__image-wrap">
-              <img :src="post.image" :alt="post.title" class="blog-card__image" loading="lazy" decoding="async" />
-              <div class="blog-card__overlay"></div>
-            </div>
-            <div class="blog-card__body">
-              <h2 class="blog-card__title">{{ post.title }}</h2>
-              <a :href="post.link" target="_blank" rel="noopener" class="blog-card__link">
-                Learn more
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-              </a>
-            </div>
-          </article>
+        <!-- Category filter -->
+        <div class="filters" role="group" aria-label="Filter posts by category">
+          <button
+            v-for="cat in categories"
+            :key="cat"
+            class="filter"
+            :class="{ 'filter--active': active === cat }"
+            :aria-pressed="active === cat"
+            @click="active = cat"
+          >
+            {{ cat }}
+          </button>
         </div>
+
+        <!-- Featured post -->
+        <router-link
+          v-if="featured"
+          :to="`/blog/${featured.slug}`"
+          class="featured card card--hover"
+          v-reveal
+        >
+          <div class="featured__media">
+            <img :src="featured.image" :alt="featured.title" class="featured__image" loading="lazy" decoding="async" />
+          </div>
+          <div class="featured__body">
+            <div class="featured__meta">
+              <span class="pill">{{ featured.category }}</span>
+              <span class="post__detail">{{ formatDate(featured.date) }}</span>
+              <span class="post__detail">{{ featured.readingTime }} min read</span>
+            </div>
+            <h2 class="featured__title">{{ featured.title }}</h2>
+            <p class="featured__excerpt">{{ featured.excerpt }}</p>
+            <span class="featured__link">
+              Read article
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </span>
+          </div>
+        </router-link>
+
+        <!-- Grid -->
+        <div class="post-grid">
+          <router-link
+            v-for="(post, i) in rest"
+            :key="post.slug"
+            :to="`/blog/${post.slug}`"
+            class="post card card--hover"
+            v-reveal="i * 60"
+          >
+            <div class="post__media">
+              <img :src="post.image" :alt="post.title" class="post__image" loading="lazy" decoding="async" />
+            </div>
+            <div class="post__body">
+              <div class="post__meta">
+                <span class="pill">{{ post.category }}</span>
+                <span class="post__detail">{{ post.readingTime }} min</span>
+              </div>
+              <h2 class="post__title">{{ post.title }}</h2>
+              <p class="post__excerpt">{{ post.excerpt }}</p>
+              <span class="post__date">{{ formatDate(post.date) }}</span>
+            </div>
+          </router-link>
+        </div>
+
+        <p v-if="!filtered.length" class="empty">No posts in this category yet.</p>
       </div>
     </section>
+
+    <CtaBanner
+      title="Rather not manage it yourself?"
+      desc="We handle the recruiting, the payroll, and the compliance. You handle the work."
+    />
   </div>
 </template>
 
 <script setup>
-const posts = [
-  { title: 'The Advantages and Disadvantages of Providing Flexible Work Hours', image: '/images/2149321602.webp', link: 'https://dubblestack.com/the-advantages-and-disadvantages-of-providing-flexible-work-hours' },
-  { title: 'Developing Remote Work Policies: Guidelines for Startups', image: '/images/2147768643.webp', link: 'https://dubblestack.com/developing-remote-work-policies-guidelines-for-startups' },
-  { title: 'Guidelines for providing feedback to remote team members', image: '/images/117525.jpg', link: 'https://dubblestack.com/guidelines-for-providing-feedback-to-remote-team-members' },
-  { title: 'Strategies for Successfully Managing a Multigenerational Workforce', image: '/images/125684.jpg', link: 'https://dubblestack.com/strategies-for-successfully-managing-a-multigenerational-workforce' },
-  // NOTE: the original assets for these two posts 404'd when the site was scraped.
-  // These are stand-ins reused from the homepage — swap in the real images when available.
-  { title: '20 Strategies for Successfully Managing Remote Teams', image: '/images/2150171838.jpg', link: 'https://dubblestack.com/20-strategies-for-successfully-managing-remote-teams' },
-  { title: 'Enhancing Employee Retention: Effective Strategies and Best Practices', image: '/images/2150312701.jpg', link: 'https://dubblestack.com/enhancing-employee-retention-effective-strategies-and-best-practices' },
-]
+import { ref, computed } from 'vue'
+import CtaBanner from '../components/CtaBanner.vue'
+import { posts, formatDate } from '../data/posts'
+
+const active = ref('All')
+
+const categories = computed(() => ['All', ...new Set(posts.map((p) => p.category))])
+
+const filtered = computed(() => {
+  const list = active.value === 'All' ? posts : posts.filter((p) => p.category === active.value)
+  // Newest first.
+  return [...list].sort((a, b) => b.date.localeCompare(a.date))
+})
+
+const featured = computed(() => filtered.value[0])
+const rest = computed(() => filtered.value.slice(1))
 </script>
 
 <style scoped>
-.blog-hero {
-  background: linear-gradient(135deg, #66023c 0%, #2d0f3e 100%);
-  padding: 8rem 0 4rem;
-  text-align: center;
+.filters {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 3rem;
 }
-.blog-hero__title {
+.filter {
+  padding: 0.5rem 1.1rem;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid var(--color-border);
+  background: var(--color-surface);
+  font-size: 0.87rem;
+  font-weight: 650;
+  color: var(--color-muted);
+  transition: all var(--transition-fast);
+}
+.filter:hover { border-color: var(--plum-300); color: var(--plum-700); }
+.filter--active {
+  background: var(--plum-700);
+  border-color: var(--plum-700);
   color: #fff;
-  font-size: clamp(2rem, 5vw, 3rem);
-  margin-bottom: 0.75rem;
-}
-.blog-hero__sub {
-  color: rgba(255,255,255,0.7);
-  font-size: 1.1rem;
-  max-width: 600px;
-  margin: 0 auto;
 }
 
-.blog-grid {
+/* Featured */
+.featured {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-  gap: 2rem;
+  grid-template-columns: 1.05fr 1fr;
+  margin-bottom: 2.5rem;
 }
-.blog-card {
+.featured__media { overflow: hidden; }
+.featured__image {
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+.featured:hover .featured__image { transform: scale(1.04); }
+.featured__body {
+  padding: 2.5rem;
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
-.blog-card__image-wrap {
-  position: relative;
-  overflow: hidden;
-  aspect-ratio: 16/9;
+.featured__meta, .post__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
 }
-.blog-card__image {
+.post__detail { font-size: 0.82rem; color: var(--color-light); }
+.featured__title {
+  font-size: clamp(1.35rem, 2.6vw, 1.85rem);
+  margin-bottom: 0.85rem;
+}
+.featured__excerpt {
+  color: var(--color-muted);
+  font-size: 0.98rem;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+.featured__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--plum-700);
+  font-weight: 700;
+  font-size: 0.92rem;
+  transition: gap var(--transition-fast);
+}
+.featured:hover .featured__link { gap: 0.8rem; }
+
+/* Grid */
+.post-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+  gap: 1.75rem;
+}
+.post { display: flex; flex-direction: column; }
+.post__media { overflow: hidden; aspect-ratio: 16 / 9; }
+.post__image {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform var(--transition-slow);
 }
-.blog-card:hover .blog-card__image {
-  transform: scale(1.05);
-}
-.blog-card__overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.3), transparent);
-  opacity: 0;
-  transition: opacity var(--transition-normal);
-}
-.blog-card:hover .blog-card__overlay {
-  opacity: 1;
-}
-.blog-card__body {
+.post:hover .post__image { transform: scale(1.05); }
+.post__body {
   padding: 1.5rem;
   flex: 1;
   display: flex;
   flex-direction: column;
 }
-.blog-card__title {
-  font-size: 1.1rem;
+.post__title {
+  font-size: 1.12rem;
   line-height: 1.4;
+  margin-bottom: 0.6rem;
+}
+.post__excerpt {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  line-height: 1.65;
   margin-bottom: 1rem;
   flex: 1;
 }
-.blog-card__link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  color: var(--brand-primary);
-  font-weight: 600;
-  font-size: 0.9rem;
-  transition: gap var(--transition-fast);
-}
-.blog-card__link:hover {
-  gap: 0.8rem;
+.post__date { font-size: 0.82rem; color: var(--color-light); }
+
+.empty {
+  text-align: center;
+  color: var(--color-light);
+  padding: 3rem 0;
 }
 
+@media (max-width: 900px) {
+  .featured { grid-template-columns: 1fr; }
+  .featured__image { min-height: 220px; }
+  .featured__body { padding: 1.75rem; }
+}
 @media (max-width: 767px) {
-  .blog-grid {
-    grid-template-columns: 1fr;
-  }
+  .post-grid { grid-template-columns: 1fr; }
 }
 </style>
