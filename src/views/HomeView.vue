@@ -68,7 +68,7 @@
         <ol class="steps">
           <li v-for="(step, i) in steps" :key="step.title" class="step" v-reveal="i * 100">
             <div class="step__media">
-              <img :src="step.image" :alt="" class="step__image" loading="lazy" decoding="async" />
+              <img :src="step.image" alt="" class="step__image" loading="lazy" decoding="async" />
               <span class="step__number">{{ i + 1 }}</span>
             </div>
             <h3 class="step__title">{{ step.title }}</h3>
