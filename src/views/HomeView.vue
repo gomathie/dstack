@@ -224,24 +224,29 @@ const faqs = [
 .hero__bg {
   position: absolute;
   inset: 0;
+  /* Light plum tint only — enough to hold the brand and seat the white type,
+     but low enough that the photograph actually reads. Legibility comes from
+     the focused scrim in ::after rather than from drowning the whole image. */
   background-image:
-    linear-gradient(165deg, rgba(102, 2, 60, 0.92) 0%, rgba(61, 1, 36, 0.97) 62%),
+    linear-gradient(170deg, rgba(102, 2, 60, 0.55) 0%, rgba(45, 1, 27, 0.62) 100%),
     url('/images/hero-bg.jpg');
-  background-position: center, top center;
+  background-position: center, center 28%;
   background-size: cover, cover;
   background-repeat: no-repeat;
   z-index: 0;
 }
-/* Radial bloom behind the headline for depth. */
+/* Elliptical scrim centred on the copy: darkens just behind the text and
+   fades out toward the edges, so the photo stays visible left and right. */
 .hero__bg::after {
   content: '';
   position: absolute;
-  top: -20%;
-  left: 50%;
-  width: 1000px;
-  height: 1000px;
-  transform: translateX(-50%);
-  background: radial-gradient(circle, rgba(188, 144, 169, 0.28) 0%, transparent 60%);
+  inset: 0;
+  background:
+    radial-gradient(ellipse 78% 62% at 50% 46%,
+      rgba(35, 1, 21, 0.68) 0%,
+      rgba(35, 1, 21, 0.42) 48%,
+      rgba(35, 1, 21, 0) 78%),
+    linear-gradient(180deg, rgba(35, 1, 21, 0.5) 0%, transparent 22%);
 }
 .hero__content {
   position: relative;
@@ -260,13 +265,16 @@ const faqs = [
   margin: 1.5rem 0 1.25rem;
   font-size: clamp(2.3rem, 5.6vw, 4rem);
   letter-spacing: -0.035em;
+  /* Insurance for the brighter parts of the photograph now showing through. */
+  text-shadow: 0 2px 24px rgba(24, 0, 14, 0.5);
 }
 .hero__desc {
-  color: rgba(255, 255, 255, 0.78);
+  color: rgba(255, 255, 255, 0.9);
   font-size: clamp(1.05rem, 1.9vw, 1.25rem);
   max-width: 620px;
   margin: 0 auto 2.25rem;
   text-wrap: pretty;
+  text-shadow: 0 1px 14px rgba(24, 0, 14, 0.55);
 }
 .hero__actions {
   display: flex;
@@ -277,7 +285,8 @@ const faqs = [
 .hero__note {
   margin: 1.75rem 0 0;
   font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.72);
+  text-shadow: 0 1px 10px rgba(24, 0, 14, 0.6);
 }
 
 .stats-section { margin-top: -3.5rem; position: relative; z-index: 3; }
