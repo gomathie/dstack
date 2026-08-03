@@ -228,7 +228,7 @@ const faqs = [
      but low enough that the photograph actually reads. Legibility comes from
      the focused scrim in ::after rather than from drowning the whole image. */
   background-image:
-    linear-gradient(170deg, rgba(102, 2, 60, 0.55) 0%, rgba(45, 1, 27, 0.62) 100%),
+    linear-gradient(170deg, rgba(102, 2, 60, 0.4) 0%, rgba(45, 1, 27, 0.5) 100%),
     url('/images/hero-bg.jpg');
   background-position: center, center 28%;
   background-size: cover, cover;
@@ -242,11 +242,11 @@ const faqs = [
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 78% 62% at 50% 46%,
-      rgba(35, 1, 21, 0.68) 0%,
-      rgba(35, 1, 21, 0.42) 48%,
-      rgba(35, 1, 21, 0) 78%),
-    linear-gradient(180deg, rgba(35, 1, 21, 0.5) 0%, transparent 22%);
+    radial-gradient(ellipse 76% 58% at 50% 46%,
+      rgba(35, 1, 21, 0.6) 0%,
+      rgba(35, 1, 21, 0.34) 50%,
+      rgba(35, 1, 21, 0) 80%),
+    linear-gradient(180deg, rgba(35, 1, 21, 0.45) 0%, transparent 20%);
 }
 .hero__content {
   position: relative;
@@ -471,6 +471,22 @@ const faqs = [
 
 @media (max-width: 767px) {
   .hero { min-height: auto; padding: calc(var(--header-height) + 2.5rem) 0 3.5rem; }
+  /* The photo crops tighter and brighter on narrow screens, and the copy sits
+     across more of it — so the scrim has to work harder here to keep the small
+     print above the 4.5:1 contrast floor. */
+  .hero__bg {
+    background-image:
+      linear-gradient(170deg, rgba(102, 2, 60, 0.52) 0%, rgba(45, 1, 27, 0.6) 100%),
+      url('/images/hero-bg.jpg');
+  }
+  .hero__bg::after {
+    background:
+      radial-gradient(ellipse 96% 60% at 50% 48%,
+        rgba(35, 1, 21, 0.66) 0%,
+        rgba(35, 1, 21, 0.44) 55%,
+        rgba(35, 1, 21, 0.1) 85%),
+      linear-gradient(180deg, rgba(35, 1, 21, 0.45) 0%, transparent 20%);
+  }
   .hero__actions .btn { width: 100%; max-width: 320px; }
   .stats-section { margin-top: 0; }
   .roles-grid, .talent-grid { grid-template-columns: 1fr; }
