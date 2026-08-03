@@ -11,7 +11,7 @@ export const company = {
   phone: '+1 (555) 014-2200',
   linkedin: 'https://www.linkedin.com/company/dubblestack/',
   foundedYear: 2019,
-  hubs: ['Venezuela', 'Peru', 'Nigeria', 'Philippines'],
+  hubs: ['Venezuela', 'Peru', 'Nigeria', 'Ghana', 'Philippines'],
 }
 
 // Headline numbers. These appear on the homepage and About page — keep the two

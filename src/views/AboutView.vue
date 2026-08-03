@@ -151,6 +151,7 @@ const hubs = [
   { country: 'Venezuela', city: 'Caracas · Valencia', note: 'Our first hub and still the deepest bench in finance and legal support.' },
   { country: 'Peru', city: 'Lima', note: 'Strong accounting and customer success talent with natural US time-zone overlap.' },
   { country: 'Nigeria', city: 'Lagos', note: 'Fast-growing engineering and marketing pool, well aligned to European hours.' },
+  { country: 'Ghana', city: 'Accra · Kumasi', note: 'Strong finance, support, and operations talent working comfortably across UK and US Eastern hours.' },
   { country: 'Philippines', city: 'Manila · Cebu', note: 'Deep experience in support and operations, covering Asia-Pacific coverage windows.' },
 ]
 
