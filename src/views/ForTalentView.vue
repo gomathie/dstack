@@ -125,6 +125,7 @@ const openings = [
   { title: 'Full-Stack Engineer (React / Node)', category: 'Engineering', location: 'Nigeria · Remote', hours: 'European overlap', terms: 'Full-time' },
   { title: 'Customer Support Specialist', category: 'Customer Success', location: 'Philippines · Remote', hours: 'APAC + US West', terms: 'Full-time' },
   { title: 'Executive Assistant', category: 'Operations', location: 'Venezuela · Remote', hours: 'US Central overlap', terms: 'Full-time' },
+  { title: 'Bookkeeper', category: 'Finance', location: 'Ghana · Remote', hours: 'UK / US Eastern overlap', terms: 'Full-time' },
   { title: 'Paid Media Buyer', category: 'Marketing', location: 'Any hub · Remote', hours: 'Flexible', terms: 'Part-time or full-time' },
   { title: 'Paralegal (Commercial Contracts)', category: 'Legal', location: 'Venezuela · Remote', hours: 'US Eastern overlap', terms: 'Full-time' },
 ]
