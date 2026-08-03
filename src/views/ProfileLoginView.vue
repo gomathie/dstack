@@ -206,7 +206,8 @@ function submit() {
   color: #fff;
   font-size: 1.1rem;
 }
-.auth__logo { width: 38px; }
+/* Dark mark on a plum panel — knock it out to white, as in the header. */
+.auth__logo { width: 38px; filter: brightness(0) invert(1); }
 .auth__headline {
   color: #fff;
   font-size: clamp(1.8rem, 3.4vw, 2.4rem);

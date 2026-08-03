@@ -53,10 +53,12 @@ const route = useRoute()
 const scrolled = ref(false)
 const mobileOpen = ref(false)
 
-// The transparent treatment only works over a dark hero. Home has one, and so
-// does every page using .page-hero — but the 404 and any future light page
-// don't, so those get the solid header from the start.
-const overHero = computed(() => route.name !== 'NotFound')
+// The transparent treatment only works over a full-width dark hero. Home has
+// one, and so does every page using .page-hero. The 404 is light, and the auth
+// page is a split layout whose right half is white — a transparent header
+// would put white nav links on a white panel. Both get the solid header.
+const LIGHT_PAGES = ['NotFound', 'ProfileLogin']
+const overHero = computed(() => !LIGHT_PAGES.includes(route.name))
 const solid = computed(() => scrolled.value || !overHero.value || mobileOpen.value)
 
 function handleScroll() {
@@ -118,8 +120,12 @@ onUnmounted(() => {
 .header__logo {
   width: 40px;
   height: auto;
-  transition: transform var(--transition-normal);
+  transition: transform var(--transition-normal), filter var(--transition-normal);
+  /* The source mark is dark plum on transparent, which disappears against the
+     plum hero. Knock it out to white while the header is transparent. */
+  filter: brightness(0) invert(1);
 }
+.site-header--solid .header__logo { filter: none; }
 .header__brand:hover .header__logo { transform: scale(1.06) rotate(-3deg); }
 .header__title {
   font-family: var(--font-heading);
