@@ -25,3 +25,6 @@ dist-ssr
 
 # Local-only secrets for `wrangler pages dev`
 .dev.vars
+
+# Wrangler local runtime state
+.wrangler/
